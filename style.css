@@ -1,0 +1,13 @@
+*{
+    font-family: 'TRT', sans-serif;
+}
+
+#loading{
+    display: none;
+}
+#details{
+    opacity: 0;
+}
+.col-2 img{
+    height: 120px;
+}
