@@ -126,3 +126,9 @@ function renderError(err) {
     },3000);
     document.querySelector("#errors").innerHTML = html
 };
+function toggleDarkMode() {
+    const body = document.querySelector('body');
+    document.querySelector("#switch").classList.remove("fa-sun");
+    document.querySelector("#switch").classList.add("fa-moon");
+    body.classList.toggle('dark-mode');
+  }

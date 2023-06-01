@@ -1,7 +1,14 @@
 *{
     font-family: 'TRT', sans-serif;
 }
+body {
+    transition: background-color 0.3s ease;
+}
 
+.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
 #loading{
     display: none;
 }
