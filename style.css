@@ -11,3 +11,9 @@
 .col-2 img{
     height: 120px;
 }
+.github a{
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 32px;
+}
+
