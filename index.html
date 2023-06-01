@@ -26,7 +26,7 @@
       <div id="errors"></div>
       <div class="card mb-3">
         <div class="card-body">
-          <div class="input-group">
+          <div class="input-group" id="inputLocation">
             <input type="text" id="txtSearch" class="form-control" />
             <button class="btn btn-dark" id="btnSearch">Search</button>
             <button id="btnLocation" class="btn btn-danger">
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <footer class="py-4 text-center text-light fixed-bottom bg-dark align-items-center">
+    <footer class="py-4 text-center text-light fixed-bottom bg-dark">
         <span class="container text-center lead">
           All rights reserved. @2023
         </span>
@@ -68,7 +68,7 @@
           </a>
         </span>
         <button onclick="toggleDarkMode()" class="btn btn-dark">
-          <i class="fas fa-sun" id="switch"></i>
+          <i class="fas fa-toggle-on" id="switch"></i>
         </button>
 
       </footer>
