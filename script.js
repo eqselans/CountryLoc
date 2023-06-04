@@ -1,44 +1,53 @@
 document.querySelector("#btnSearch").addEventListener("click",()=>{
     let text = document.querySelector("#txtSearch").value;
+    try{if (text == "") {
+        throw new Error("Please enter location");
+    }}
+    catch(err){
+        renderError(err);
+    }
     document.querySelector("#details").style.opacity = 0;
     document.querySelector("#loading").style.display = "block";
     getCountry(text);
 });
 
-// document.querySelector("#btnLocation").addEventListener("click",()=>{
-//     if (navigator.geolocation) {
-//     document.querySelector("#loading").style.display = "block";
-//     navigator.geolocation.getCurrentPosition(onSuccess,onError);
+document.querySelector("#btnLocation").addEventListener("click",()=>{
+    if (navigator.geolocation) {
+    document.querySelector("#loading").style.display = "block";
+    navigator.geolocation.getCurrentPosition(onSuccess,onError);
     
-//     }
-// })
+    }
+})
 
-// async function onSuccess(position) {
-//     console.log(position);
-//     let latitude = position.coords.latitude;
-//     let longitude = position.coords.longitude
+async function onSuccess(position) {
+    console.log(position);
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude
 
-//     console.log(latitude);
-//     console.log(longitude);
+    console.log(latitude);
+    console.log(longitude);
 
-//     const api_key = "Your api key";
-//     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
+    const api_key = "22593cdfd1ce4a9ea0b13b786f75b44c";
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
 
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     console.log(data);
-//     console.log(data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village);
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    console.log(data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village);
 
-//     const country = data.results[0].components.country;
+    const country = data.results[0].components.country;
 
-//     document.querySelector("#txtSearch").placeholder = data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village;
+    document.querySelector("#txtSearch").placeholder = data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village;
 
-// }
+    getCountry(country);
+    getWeather(latitude,longitude);
+    
+}
 
-// function onError(err) {
-//     document.querySelector("#loading").style.display = "none";
-//     console.log(err);
-// }
+function onError(err) {
+    document.querySelector("#loading").style.display = "none";
+    console.log(err);
+}
 
 async function getCountry(country) {
     try{const response = await fetch('https://restcountries.com/v3.1/name/'+country);
@@ -131,4 +140,27 @@ function toggleDarkMode() {
     document.querySelector("#switch").classList.remove("fa-sun");
     document.querySelector("#switch").classList.add("fa-moon");
     body.classList.toggle('dark-mode');
-  }
+};
+async function getWeather(latitude,longitude) {
+
+    this.latitude = latitude;
+    this.longitude = longitude
+
+    const wapi_key = 'fa7b5127f1daedc8fc1f814a5fc7bcbe'
+    const urlw = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${wapi_key}`;
+    const response = await fetch(urlw)
+    const data = await response.json();
+    console.log(data.weather[0].main);
+    renderWeather(data)
+}
+
+function renderWeather(data) {
+    
+    let html = `
+    <div class="col-4">
+        <h1>${data.weather[0].main}</h1>
+    </div>
+    `
+
+    document.querySelector("#weather-details").innerHTML = html
+}
