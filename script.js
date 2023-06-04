@@ -25,7 +25,7 @@ async function onSuccess(position) {
     console.log(latitude);
     console.log(longitude);
 
-    const api_key = "22593cdfd1ce4a9ea0b13b786f75b44c";
+    const api_key = "APIKEY";
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
 
     const response = await fetch(url);
@@ -142,7 +142,7 @@ async function getWeather(latitude,longitude) {
     this.latitude = latitude;
     this.longitude = longitude
 
-    const wapi_key = 'fa7b5127f1daedc8fc1f814a5fc7bcbe'
+    const wapi_key = 'APIKEY'
     const urlw = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${wapi_key}`;
     const response = await fetch(urlw)
     const data = await response.json();
