@@ -10,15 +10,13 @@ document.querySelector("#btnSearch").addEventListener("click",()=>{
     document.querySelector("#loading").style.display = "block";
     getCountry(text);
 });
-
 document.querySelector("#btnLocation").addEventListener("click",()=>{
     if (navigator.geolocation) {
     document.querySelector("#loading").style.display = "block";
     navigator.geolocation.getCurrentPosition(onSuccess,onError);
     
     }
-})
-
+});
 async function onSuccess(position) {
     console.log(position);
     let latitude = position.coords.latitude;
@@ -42,13 +40,11 @@ async function onSuccess(position) {
     getCountry(country);
     getWeather(latitude,longitude);
     
-}
-
+};
 function onError(err) {
     document.querySelector("#loading").style.display = "none";
     console.log(err);
-}
-
+};
 async function getCountry(country) {
     try{const response = await fetch('https://restcountries.com/v3.1/name/'+country);
     if (!response.ok) {
@@ -152,8 +148,7 @@ async function getWeather(latitude,longitude) {
     const data = await response.json();
     console.log(data.weather[0].main);
     renderWeather(data)
-}
-
+};
 function renderWeather(data) {
     
     let html = `
@@ -163,4 +158,4 @@ function renderWeather(data) {
     `
 
     document.querySelector("#weather-details").innerHTML = html
-}
+};
