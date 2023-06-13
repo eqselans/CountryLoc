@@ -2,7 +2,7 @@
     font-family: 'TRT', sans-serif;
 }
 body {
-    transition: background-color 0.3s ease;
+    transition: background-color 0.5s linear;
 }
 
 .dark-mode {
@@ -11,6 +11,9 @@ body {
 }
 #loading{
     display: none;
+}
+#weather{
+    opacity:0 ;
 }
 #details{
     opacity: 0;

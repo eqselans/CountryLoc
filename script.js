@@ -25,21 +25,26 @@ async function onSuccess(position) {
     console.log(latitude);
     console.log(longitude);
 
-    const api_key = "APIKEY";
+    const api_key = "Your API Key";
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
 
     const response = await fetch(url);
     const data = await response.json();
+    console.log(response);
     console.log(data);
     console.log(data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village);
 
     const country = data.results[0].components.country;
 
-    document.querySelector("#txtSearch").placeholder = data.results[0].components.country+"/"+data.results[0].components.state +"/"+data.results[0].components.town +"/"+data.results[0].components.village;
+    document.querySelector("#txtSearch").placeholder = 
+
+    data.results[0].components.country+"/"+
+    data.results[0].components.state +"/"+
+    data.results[0].components.town +"/"+
+    data.results[0].components.village;
 
     getCountry(country);
     getWeather(latitude,longitude);
-    
 };
 function onError(err) {
     document.querySelector("#loading").style.display = "none";
@@ -60,7 +65,9 @@ async function getCountry(country) {
 
     const response2 = await fetch('https://restcountries.com/v3.1/alpha?codes='+countries.toString());
     const neighbors = await response2.json();
-    renderNeighbors(neighbors)}
+    renderNeighbors(neighbors)
+    console.log(data);
+    }
 
     catch(err){
         document.querySelector("#loading").style.display = "none";
@@ -71,6 +78,9 @@ function renderCountry(data) {
     document.querySelector("#loading").style.display = "none";
     document.querySelector("#country-details").innerHTML ="";
     document.querySelector("#neighbors").innerHTML="";
+
+    const map = Object.values(data.maps.googleMaps).join("");
+    const timezone = Object.values(data.timezones[0]).join("");
 
     let html =`
 
@@ -96,6 +106,15 @@ function renderCountry(data) {
                         <div class="col-4">Currency:</div>
                         <div class="col-8 text-success">${Object.values(data.currencies)[0].name} (${Object.values(data.currencies)[0].symbol})</div>
                     </div>
+                    <div class="row">
+                        <div class="col-4">Location:</div>
+                        <a href="https://goo.gl/maps/dXFFraiUDfcB6Quk6
+"                        class="col-8 text-success">${map} </a>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">Timezone:</div>
+                        <div class="col-8 text-success">${timezone}</div>
+                    </div>
                 </div>
     `;
 
@@ -112,7 +131,8 @@ function renderNeighbors(data) {
             <div class="card">
                 <img src="${country.flags.png}" class="card-img-top">
                 <div class="card-body">
-                    <h6 class="card-title">${country.name.official}</h6>
+                    <h6 class="card-title fw-bolder">${country.name.official}</h6>
+                    <p>${country.region}</p>
                 </div>
             </div>
         </div>
@@ -133,8 +153,17 @@ function renderError(err) {
 };
 function toggleDarkMode() {
     const body = document.querySelector('body');
-    document.querySelector("#switch").classList.remove("fa-sun");
-    document.querySelector("#switch").classList.add("fa-moon");
+
+    if(document.querySelector("#switch").classList.contains("fa-toggle-on")){
+        document.querySelector("#switch").classList.remove("fa-toggle-on");
+        document.querySelector("#switch").classList.add("fa-toggle-off");
+    }
+    else{
+        document.querySelector("#switch").classList.remove("fa-toggle-off");
+        document.querySelector("#switch").classList.add("fa-toggle-on");
+    }
+
+
     body.classList.toggle('dark-mode');
 };
 async function getWeather(latitude,longitude) {
@@ -142,20 +171,28 @@ async function getWeather(latitude,longitude) {
     this.latitude = latitude;
     this.longitude = longitude
 
-    const wapi_key = 'APIKEY'
-    const urlw = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${wapi_key}`;
+    const wapi_key = "Your API Key"
+    const urlw = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${wapi_key}&lang=tr&units=metric`;
     const response = await fetch(urlw)
     const data = await response.json();
-    console.log(data.weather[0].main);
+    console.log(data);
+    console.log(data.weather[0].description);
     renderWeather(data)
 };
 function renderWeather(data) {
     
+    document.querySelector("#weather").style.opacity = 1;
+
+    const status = data.weather[0].main;
+    const temp = data.main.temp;
     let html = `
-    <div class="col-4">
-        <h1>${data.weather[0].main}</h1>
+    <div class="col-6">
+        <h2>Current Weather : ${status}</h2>
+        <h2>Current Temperature : ${temp} &deg;C</h2>
     </div>
     `
+    document.querySelector("#weather-details").innerHTML = html;
 
-    document.querySelector("#weather-details").innerHTML = html
+    let html2 = `Weather of Your Current Location /<em class="text-dark-emphasis fw-light">${data.name}</em> `
+    document.querySelector("#weather .card-header").innerHTML = html2
 };
